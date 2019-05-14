@@ -4,5 +4,9 @@ module files
 end
 
 function ping(id_eaxon,id_cu)
-    functional_unit_recieve(id_eaxon,id_cu)
+    send_ACK(id_eaxon,id_cu)
+end
+
+function start_sensing(id_eaxon,id_cu)
+    send_ACK(id_eaxon,id_cu)
 end
