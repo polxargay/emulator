@@ -5,3 +5,8 @@ function send_ACK(id_eaxon,id_cu)
         end
     end
 end
+
+function sensing(id_eaxon,id_cu)
+    
+
+end
