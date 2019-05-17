@@ -18,6 +18,10 @@ end
     stimulation()
 =#
 
+function ping_CU(id_cu)
+    send_ACK_CU(id_cu)
+end
+
 ####### COMMANDS FOR SECUNDARY NETWORK #######
 #=
     fast_get_sample(id_eaxon)
@@ -36,7 +40,7 @@ end
     get_efuse()
 =#
 function ping_FU(id_eaxon,id_cu)
-    send_ACK(id_eaxon,id_cu)
+    send_ACK_FU(id_eaxon,id_cu)
 end
 
 function start_sensing(id_eaxon,id_cu)
