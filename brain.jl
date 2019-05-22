@@ -1,8 +1,3 @@
-module files
-    include("environment.jl")
-    include("fu.jl")
-end
-
 ####### COMMANDS FOR PRIMARY NETWORK #######
 #=
     reset_CU(id_cu)
@@ -18,8 +13,16 @@ end
     stimulation()
 =#
 
-function ping_CU(id_cu)
-    send_ACK_CU(id_cu)
+#communication module for the control unit
+function brain_cu(command,id_cu)
+    response = control_unit(command,id_cu)
+    println(response)
+end
+
+#communication module for the functional unit
+function brain_fu(command,id_cu,id_fu)
+    response = functional_unit(id_eaxon,id_cu)
+    println(response)
 end
 
 ####### COMMANDS FOR SECUNDARY NETWORK #######
@@ -39,10 +42,7 @@ end
     set_efuse()
     get_efuse()
 =#
-function ping_FU(id_eaxon,id_cu)
-    send_ACK_FU(id_eaxon,id_cu)
-end
-
-function start_sensing(id_eaxon,id_cu)
-    send_ACK(id_eaxon,id_cu)
+function cu_fu(command,id_eaxon,id_cu)
+    response = functional_unit(command,id_eaxon,id_cu)
+    println(response)
 end
