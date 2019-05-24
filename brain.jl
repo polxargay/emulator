@@ -1,15 +1,17 @@
 ####### COMMANDS FOR PRIMARY NETWORK #######
 #=
-    reset_CU(id_cu)
-    reset_FU(id_eaxon,id_cu)
-    stop_CU
-    stop_FU
-    ping_CU(id_cu)
+******** DOWNLINK COMMANDS *********
+
+    reset_CU(id_cu) --> fet
+    reset_FU(id_eaxon,id_cu) --> fet
+    stop_CU --> fet
+    stop_FU --> fet
+    ping_CU(id_cu) --> fet
     ping_FU(id_eaxon,id_cu)
-    set_SAR_limit()
-    set_lead_off()
-    get_SAR_limit()
-    get_lead-off()
+    set_SAR_limit() --> fet
+    set_lead_off() --> fet
+    get_SAR_limit() --> fet
+    get_lead-off() --> fet
     stimulation()
 =#
 

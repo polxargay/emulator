@@ -11,4 +11,27 @@ end
 
 function functional_unit(command,id_eaxon,id_cu)
 
+    if command == "reset_fu"
+        x = 0
+        for i in 1:length(eaxons)
+            if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
+                x = i
+                eaxons[i].group = 0
+                eaxons[i].message = string("eAXON with ID ", eaxons[i].id," says: TASK DONE")
+            end
+        end
+        return eaxons[x].message
+
+    elseif command == "stop_fu"
+        x = 0
+        for i in 1:length(eaxons)
+            if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
+                x = i
+                eaxons[i].message = string("eAXON with ID ", eaxons[i].id," says: TASK DONE")
+            end
+        end
+        return eaxons[x].message
+
+    end
+
 end

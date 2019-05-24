@@ -1,3 +1,9 @@
+#= Response from the CU
+******** UPLINK COMMANDS *******
+
+
+=#
+
 function control_unit(command,id_cu)
 
     if command == "reset_cu"
