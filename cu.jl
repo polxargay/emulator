@@ -1,4 +1,4 @@
-#= Response from the CU
+#= Response from the CU in the primary network
 ******** UPLINK COMMANDS *******
 
 
@@ -89,4 +89,27 @@ function control_unit(command,id_cu)
         return cus[x].message
     end
 
+end
+
+
+####### COMMANDS FOR SECUNDARY NETWORK #######
+#=
+    fast_get_sample(id_eaxon)
+    reset(id_eaxon)
+    stop_sensing(id_eaxon)
+    ping_FU(id_eaxon, id_cu)
+    stimulate(id_eaxon, id_cu)
+    start_sensing(id_eaxon, id_cu)
+    get_sample(id_eaxon, id_cu)
+    get_stimulation_conf(id_eaxon, id_cu)
+    get_group_conf(id_Eaxon, id_cu)
+    set_stimulation_conf(id_eaxon, id_cu, config)
+    set_group_conf(id_eaxon, id_cu, id_group, config)
+    set_uplink_limit()
+    set_efuse()
+    get_efuse()
+=#
+function cu_fu(command,id_eaxon,id_cu)
+    response = functional_unit_cu(command,id_eaxon,id_cu)
+    println(response)
 end
