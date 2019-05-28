@@ -81,7 +81,7 @@ function functional_unit_brain(command,id_eaxon,id_cu)
         end
         return eaxons[x].message
 
-    #=elseif command == "start_sensing"
+    elseif command == "start_sensing"
         x = 0 #initialize value in order to found the corresponding eAXON
         for i in 1:length(eaxons)
             if (eaxons[i].id == id_eaxon or eaxons[i].group == id_eaxon) && eaxons[i].cu_id == id_cu
@@ -93,19 +93,16 @@ function functional_unit_brain(command,id_eaxon,id_cu)
                     return null
                 end
             end
-        end=#
+        end
 
     end
-
 end
 
-function create_sample()
-    #=for i in 1:length(eaxons)
-        if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
-            #eaxons[i].group = 0
-            push!(eaxons.samples[2],EAXON(id_eaxon,0,id_cu,["sample"],"ACK"))
-        end
-    end=#
+function create_sample(nsamples)
     samples = String[]
-    push!(samples,"sample")
+    for x in 1:nsamples
+        push!(samples,"sample")
+    end
+    #println(samples)
+    return samples
 end
