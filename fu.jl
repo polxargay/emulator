@@ -100,6 +100,12 @@ function functional_unit_brain(command,id_eaxon,id_cu)
 end
 
 function create_sample()
-    samples = []
+    #=for i in 1:length(eaxons)
+        if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
+            #eaxons[i].group = 0
+            push!(eaxons.samples[2],EAXON(id_eaxon,0,id_cu,["sample"],"ACK"))
+        end
+    end=#
+    samples = String[]
     push!(samples,"sample")
 end

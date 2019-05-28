@@ -1,30 +1,30 @@
 
 
 mutable struct EAXON
-    id
-    group
-    cu_id
-    sample #es pot posar com un array????????
+    id::Int64
+    group::Int64
+    cu_id::Int64
+    samples::Vector{} #es pot posar com un array????????
     message
-    EAXON(x,y,z,j) = new(x,y,z,j,"ACK")
+    EAXON(x,y,z) = new(x,y,z,["sample"],"ACK")
 end
 
 mutable struct CU
-    id
-    sar_limit
-    lead_off
+    id::Int64
+    sar_limit::Int64
+    lead_off::Int64
     message
     CU(x,y,z) = new(x,y,z,"message")
 end
 
 #Create an empty array of EAXON struct
-eaxons = []
-cus = []
+eaxons = EAXON[]
+cus = CU[]
 
 function create_eaxon(neaxons,cu_id)
     for x in 1:neaxons
         #al final de l'array eaxons[], afegeixo els eaxons creats
-        push!(eaxons,EAXON(x,0,cu_id,0))
+        push!(eaxons,EAXON(x,0,cu_id))
     end
     #println(eaxons)
     #return eaxons
