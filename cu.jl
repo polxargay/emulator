@@ -95,9 +95,9 @@ end
 ####### COMMANDS FOR SECUNDARY NETWORK #######
 #=
     fast_get_sample(id_eaxon)
-    reset(id_eaxon)
-    stop_sensing(id_eaxon)
-    ping_FU(id_eaxon, id_cu)
+    reset(id_eaxon) --> fet
+    stop_sensing(id_eaxon) --> fet
+    ping_FU(id_eaxon, id_cu) --> fet
     stimulate(id_eaxon, id_cu)
     start_sensing(id_eaxon, id_cu)
     get_sample(id_eaxon, id_cu)
