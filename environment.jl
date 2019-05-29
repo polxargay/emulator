@@ -6,7 +6,9 @@ mutable struct EAXON
     cu_id::Int64
     samples::Vector{} #es pot posar com un array????????
     message
-    EAXON(x,y,z) = new(x,y,z,["sample"],"ACK")
+    sense_conf
+    stimulation_conf
+    EAXON(x,y,z) = new(x,y,z)
 end
 
 mutable struct CU
@@ -14,7 +16,7 @@ mutable struct CU
     sar_limit::Int64
     lead_off::Int64
     message
-    CU(x,y,z) = new(x,y,z,"message")
+    CU(x,y,z) = new(x,y,z)
 end
 
 #Create an empty array of EAXON struct

@@ -94,22 +94,25 @@ end
 
 ####### COMMANDS FOR SECUNDARY NETWORK #######
 #=
-    fast_get_sample(id_eaxon)
+    fast_get_sample(id_eaxon) --> fet
     reset(id_eaxon) --> fet
     stop_sensing(id_eaxon) --> fet
     ping_FU(id_eaxon, id_cu) --> fet
     stimulate(id_eaxon, id_cu)
-    start_sensing(id_eaxon, id_cu)
+    start_sensing(id_eaxon, id_cu) --> fet
     get_sample(id_eaxon, id_cu)
     get_stimulation_conf(id_eaxon, id_cu)
     get_group_conf(id_Eaxon, id_cu)
     set_stimulation_conf(id_eaxon, id_cu, config)
-    set_group_conf(id_eaxon, id_cu, id_group, config)
+    set_sensing_conf
+    set_group_conf(id_eaxon, id_cu, id_group, config) --> fet
     set_uplink_limit()
     set_efuse()
     get_efuse()
 =#
-function cu_fu(command,id_eaxon,id_cu)
-    response = functional_unit_cu(command,id_eaxon,id_cu)
+
+#if there is no group defined, send 0 in id_group field
+function cu_fu(command,id_eaxon,id_cu,id_group)
+    response = functional_unit_cu(command,id_eaxon,id_cu,id_group)
     println(response)
 end
