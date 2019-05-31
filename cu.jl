@@ -111,8 +111,32 @@ end
     get_efuse()
 =#
 
-#if there is no group defined, send 0 in id_group field
+
+#if there is no group defined, must put 0 in id_group field
 function cu_fu(command,id_eaxon,id_cu,id_group)
-    response = functional_unit_cu(command,id_eaxon,id_cu,id_group)
-    println(response)
+    payload = 0 #initialize payload variable
+
+    ##**************Commands which don't need payload***************
+    if (command == "fast_sample") | (command == "reset") | (command == "stop_sensing") |
+    (command =="ping_fu") | (command =="stimulate") | (command =="start_sensing") |
+    (command == "get_sample") | (command == "get_group_conf") | (command =="get_stimulation_conf")
+            response = functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group)
+            println(response)
+
+    ##***************Commands which need payload*****************
+    elseif command == "set_group_conf"
+        print("Assign group to the eAXON (press 0 if you want to remove from group): ")
+        group = parse(Int,readline())
+
+        if group == 0
+            payload == 0000
+        elseif group != 0
+            payload == 1111
+        end
+
+        response = functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload)
+        println(response)
+
+    end
+
 end

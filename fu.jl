@@ -1,5 +1,6 @@
-#************* Responses for the primary network *****************
-
+#*******************************************************************
+#************* RESPONSES FOR THE SECONDARY NETWORK *******************
+#*******************************************************************
 function functional_unit_brain(command,id_eaxon,id_cu)
 
     if command == "reset_fu"
@@ -36,15 +37,18 @@ function functional_unit_brain(command,id_eaxon,id_cu)
     end
 end
 
-#************* Responses for the secondary network *****************
-function functional_unit_cu(command,id_eaxon,id_cu,id_group)
+#*******************************************************************
+#************* RESPONSES FOR THE SECONDARY NETWORK *****************
+#*******************************************************************
+function functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group)
 
     if command == "fast_sample"
         for i in 1:length(eaxons)
             if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
                 #return the last sample generated
-                last_sample = eaxons[i].samples[length(eaxons[1].samples)]
-                return last_sample
+                #f_sample = create_sample(1)
+                sample = eaxons[i].samples[length(eaxons[1].samples)]
+                return sample
             end
         end
 
@@ -89,28 +93,11 @@ function functional_unit_cu(command,id_eaxon,id_cu,id_group)
             end
         end
 
-    elseif command == "set_group_conf"
-        print("Assign group to the eAXON (press 0 if you want to remove from group): ")
-        group = parse(Int,readline())
-
+    elseif command == "get_sample"
         for i in 1:length(eaxons)
             if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
-                eaxons[i].group = group
-                return string("eaxon with ID ", eaxons[i].id, " sends ACK")
-            end
-        end
-
-    elseif command == "set_stimulation_conf"
-        print("Set stimulation configuration (0 for Anode - Cathode // 1 for): ")
-        conf = parse(Int,readline())
-
-        for i in 1:length(eaxons)
-            if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
-                if conf == 0
-                    eaxons[i].stimulation_conf == "Anode - Cathode"
-                elseif conf == 1
-                    eaxons[i].stimulation_conf == "Cathode - Anode"
-                end
+                last_sample = eaxons[i].samples[length(eaxons[1].samples)]
+                return last_sample
             end
         end
 
@@ -129,6 +116,27 @@ function functional_unit_cu(command,id_eaxon,id_cu,id_group)
         for i in 1:length(eaxons)
             if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
                 return message = string("eAXON with ID ", eaxons[i].id, " sends stimulation configuration: ", eaxons[i].stimulation_conf)
+            end
+        end
+
+    end
+end
+
+function functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload)
+
+    if payload == 0000
+        for i in 1:length(eaxons)
+            if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
+                eaxons[i].group = 0
+                eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
+                return eaxons[i].message
+            end
+        end
+    elseif payload == 1111
+        for i in 1:length(eaxons)
+            if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
+                eaxons[i].group = id_group
+                return eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
             end
         end
 

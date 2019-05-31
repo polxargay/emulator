@@ -1,5 +1,3 @@
-
-
 mutable struct EAXON
     id::Int64
     group::Int64
