@@ -94,59 +94,68 @@ end
 
 ####### COMMANDS FOR SECUNDARY NETWORK #######
 #=
-    fast_get_sample(id_eaxon) --> fet
-    reset(id_eaxon) --> fet
-    stop_sensing(id_eaxon) --> fet
-    ping_FU(id_eaxon, id_cu) --> fet
-    stimulate(id_eaxon, id_cu)
-    start_sensing(id_eaxon, id_cu) --> fet
-    get_sample(id_eaxon, id_cu)
-    get_stimulation_conf(id_eaxon, id_cu)
-    get_group_conf(id_Eaxon, id_cu)
-    set_stimulation_conf(id_eaxon, id_cu, config)
-    set_sensing_conf
-    set_group_conf(id_eaxon, id_cu, id_group, config) --> fet
-    set_uplink_limit()
-    set_efuse()
-    get_efuse()
+    fast_get_sample -->
+    reset --> fet
+    stop_sensing -->
+    ping_FU --> fet
+    stimulate --> no sé què he de simular
+    start_sensing -->
+    get_sample -->
+    get_stimulation_conf --> fet
+    get_sensing_conf --> fet
+    get_group_conf --> fet
+    set_stimulation_conf --> fet
+    set_sensing_conf --> fet
+    set_group_conf --> fet
+    set_uplink_limit() --> fet
+    set_efuse() --> fet
+    get_efuse() --> fet
 =#
 
 
 #if there is no group defined, must put 0 in id_group field
 function cu_fu(command,id_eaxon,id_cu,id_group)
-    payload = "0" #initialize payload variable
-    header = "0" #initialize header variable
-    mode = "0"
-    freq = "0"
-    window = "0"
-    data = "0"
+    payload = "" #initialize payload variable
+    header_IHCFP = "" #initialize header variable
+    header_GCLAP = "" #Initialize GCLAP header
+
+    #initialize variables for the set_sensing_conf command
+    mode = ""
+    freq = ""
+    window = ""
+    data = ""
 
     ##**************Commands which don't need payload***************
     if (command == "fast_sample") | (command == "reset") | (command == "stop_sensing") |
     (command =="ping_fu") | (command =="stimulate") | (command =="start_sensing") |
-    (command == "get_sample") | (command == "get_group_conf") | (command =="get_stimulation_conf")
-            response = functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group)
+    (command == "get_sample") | (command =="get_stimulation_conf") | (command == "get_sensing_conf") |
+    (command == "get_efuse")
+            header_GCLAP = "01"
+            response = functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group,header_GCLAP)
             println(response)
 
     ##***************Commands which need payload*****************
-    elseif command == "set_group_conf"
-        print("Assign group to the eAXON (press 0 if you want to remove from group): ")
-        group = parse(Int,readline())
-        header = "1100"
 
-        if group == 0
-            payload == "0000"
-        elseif group != 0
-            payload == "1111"
+    elseif command == "get_group_conf"
+        header_IHCFP = "1001"
+        header_GCLAP = "10"
+        group = string(id_group, base = 2, pad = 4)
+        print("Press 0 for asking 'is in group' || Press 1 for asking 'is out of group': ")
+        in_out = parse(Int,readline())
+
+        if in_out == 0
+            payload = string(group,"0000")
+        elseif in_out == 1
+            payload = string(group,"1111")
         end
 
-        response = functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+        response = functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
         println(response)
-
     elseif command == "set_stimulation_conf"
+        header_IHCFP = "1010"
+        header_GCLAP = "10"
         print("Assign stimulation configuration to this eAXON (0 for Anode - Cathode || 1 for Cathode - Anode): ")
         stim_conf = parse(Int,readline())
-        header = 1010
 
         if stim_conf == 0
             payload = "00000000"
@@ -154,11 +163,10 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             payload = "11111111"
         end
 
-        response = functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
-        println(response)
-
+        functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
     elseif command == "set_sensing_conf"
-        header = 1011
+        header_IHCFP = "1011"
+        header_GCLAP = "10"
         print("Choose Mode 1-Raw, 2-Param RMS or 3-Param zero-crossin)")
         mode = parse(Int,readline())
         print("Choose sampling frequence 1-250 S/s, 2-500 S/s, 3-750 S/s, 4-1000 S/s")
@@ -171,11 +179,12 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
         if (mode == 1) & (freq == 1)
             data = "0000"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+            println(payload)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
         elseif (mode == 1) & (freq == 2)
             data = "0001"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header,header_GCLAP)
         elseif (mode == 1) & (freq == 3)
             data = "0010"
             payload = create_payload(data,window)
@@ -215,7 +224,38 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             payload = create_payload(data,window)
             functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
         end
+    elseif command == "set_group_conf"
+        header_IHCFP = "1100"
+        header_GCLAP = "10"
+        print("Assign group to the eAXON (press 0 if you want to remove from group): ")
+        group = parse(Int,readline())
 
+        if group == 0
+            payload = "0000"
+        elseif group != 0
+            payload = "1111"
+        end
+
+        response = functional_unit_cu_w_payload(id_eaxon,id_cu,group,payload,header_IHCFP,header_GCLAP)
+        println(response)
+    elseif command == "set_uplink_limit"
+        header_IHCFP = "1101"
+        header_GCLAP = "10"
+        print("Set uplink limit (max 255mA): ")
+        uplink_limit = parse(Int,readline())
+        uplink_limit = string(uplink_limit,base=2,pad=8)
+        payload = uplink_limit
+
+        functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
+    elseif command == "set_efuse"
+        header_IHCFP = "1110"
+        header_GCLAP = "11"
+        print("Set eFUSE value (max 4294967295): ")
+        efuse_value = parse(Int,readline())
+        efuse_value = string(efuse_value,base=2,pad=32)
+        payload = efuse_value
+
+        functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
     end
 
 end

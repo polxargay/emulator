@@ -13,6 +13,8 @@ mutable struct EAXON
     message
     sense_conf
     stimulation_conf
+    uplink_limit
+    efuse_value
     EAXON(x,y,z) = new(x,y,z)
 end
 
