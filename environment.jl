@@ -1,3 +1,10 @@
+#=mutable struct SENSE_CONF
+    mode
+    samp_freq
+    window
+    SENSE_CONF(x,y,z) = new(x,y,z)
+end=#
+
 mutable struct EAXON
     id::Int64
     group::Int64

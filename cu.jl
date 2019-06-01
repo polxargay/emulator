@@ -114,7 +114,12 @@ end
 
 #if there is no group defined, must put 0 in id_group field
 function cu_fu(command,id_eaxon,id_cu,id_group)
-    payload = 0 #initialize payload variable
+    payload = "0" #initialize payload variable
+    header = "0" #initialize header variable
+    mode = "0"
+    freq = "0"
+    window = "0"
+    data = "0"
 
     ##**************Commands which don't need payload***************
     if (command == "fast_sample") | (command == "reset") | (command == "stop_sensing") |
@@ -127,16 +132,97 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
     elseif command == "set_group_conf"
         print("Assign group to the eAXON (press 0 if you want to remove from group): ")
         group = parse(Int,readline())
+        header = "1100"
 
         if group == 0
-            payload == 0000
+            payload == "0000"
         elseif group != 0
-            payload == 1111
+            payload == "1111"
         end
 
-        response = functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload)
+        response = functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
         println(response)
+
+    elseif command == "set_stimulation_conf"
+        print("Assign stimulation configuration to this eAXON (0 for Anode - Cathode || 1 for Cathode - Anode): ")
+        stim_conf = parse(Int,readline())
+        header = 1010
+
+        if stim_conf == 0
+            payload = "00000000"
+        elseif stim_conf == 1
+            payload = "11111111"
+        end
+
+        response = functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+        println(response)
+
+    elseif command == "set_sensing_conf"
+        header = 1011
+        print("Choose Mode 1-Raw, 2-Param RMS or 3-Param zero-crossin)")
+        mode = parse(Int,readline())
+        print("Choose sampling frequence 1-250 S/s, 2-500 S/s, 3-750 S/s, 4-1000 S/s")
+        freq = parse(Int,readline())
+        print("Choose window (max 15): ")
+        window = parse(Int,readline())
+        #sense_conf = SENSE_CONF(mode,freq,window)
+        #functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,sense_conf,header)
+
+        if (mode == 1) & (freq == 1)
+            data = "0000"
+            payload = create_payload(data,window)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+        elseif (mode == 1) & (freq == 2)
+            data = "0001"
+            payload = create_payload(data,window)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+        elseif (mode == 1) & (freq == 3)
+            data = "0010"
+            payload = create_payload(data,window)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+        elseif (mode == 1) & (freq == 4)
+            data = "0011"
+            payload = create_payload(data,window)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+        elseif (mode == 2) & (freq == 1)
+            data = "0100"
+            payload = create_payload(data,window)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+        elseif (mode == 2) & (freq == 2)
+            data = "0101"
+            payload = create_payload(data,window)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+        elseif (mode == 2) & (freq == 3)
+            payload = "0110"
+        elseif (mode == 2) & (freq == 4)
+            data = "0111"
+            payload = create_payload(data,window)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+        elseif (mode == 3) & (freq == 1)
+            data = "1000"
+            payload = create_payload(data,window)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+        elseif (mode == 3) & (freq == 2)
+            data = "1001"
+            payload = create_payload(data,window)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+        elseif (mode == 3) & (freq == 3)
+            data = "1010"
+            payload = create_payload(data,window)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+        elseif (mode == 3) & (freq == 4)
+            data = "1011"
+            payload = create_payload(data,window)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+        end
 
     end
 
+end
+
+#create payload for set_sensing_conf
+function create_payload(data,wind)
+    window = string(wind,base=2,pad=4)
+    payload = string(data,window)
+    return payload
 end
