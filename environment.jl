@@ -1,21 +1,15 @@
-#=mutable struct SENSE_CONF
-    mode
-    samp_freq
-    window
-    SENSE_CONF(x,y,z) = new(x,y,z)
-end=#
-
 mutable struct EAXON
     id::Int64
     group::Int64
     cu_id::Int64
-    samples::Vector{} #es pot posar com un array????????
+    samples #es pot posar com un array????????
     message
     sense_conf
     stimulation_conf
     uplink_limit
     efuse_value
-    EAXON(x,y,z) = new(x,y,z)
+    sensing::Bool
+    EAXON(x,y,z,j) = new(x,y,z,j)
 end
 
 mutable struct CU
@@ -33,11 +27,22 @@ cus = CU[]
 function create_eaxon(neaxons,cu_id)
     for x in 1:neaxons
         #al final de l'array eaxons[], afegeixo els eaxons creats
-        push!(eaxons,EAXON(x,0,cu_id))
+        push!(eaxons,EAXON(x,0,cu_id,[]))
     end
     #println(eaxons)
     #return eaxons
 end
+
+#=function initialize_values(ncu,neaxons)
+    for i in 1:ncu
+        for j in 1:neaxons
+            if (eaxons[j].id == j) & (eaxons[j].cu_id == i)
+                eaxons[j].samples = []
+            end
+
+        end
+    end
+end=#
 
 function create_environment(ncu,neaxons)
     for x in 1:ncu

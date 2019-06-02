@@ -94,13 +94,13 @@ end
 
 ####### COMMANDS FOR SECUNDARY NETWORK #######
 #=
-    fast_get_sample -->
+    fast_get_sample --> fet
     reset --> fet
-    stop_sensing -->
+    stop_sensing --> fet
     ping_FU --> fet
     stimulate --> no sé què he de simular
-    start_sensing -->
-    get_sample -->
+    start_sensing --> fet --> falta definir com fer servir la Window!!!!!!
+    get_sample --> fet
     get_stimulation_conf --> fet
     get_sensing_conf --> fet
     get_group_conf --> fet
@@ -167,9 +167,9 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
     elseif command == "set_sensing_conf"
         header_IHCFP = "1011"
         header_GCLAP = "10"
-        print("Choose Mode 1-Raw, 2-Param RMS or 3-Param zero-crossin)")
+        print("Choose Mode 1-Raw, 2-Param RMS or 3-Param zero-crossin: ")
         mode = parse(Int,readline())
-        print("Choose sampling frequence 1-250 S/s, 2-500 S/s, 3-750 S/s, 4-1000 S/s")
+        print("Choose sampling frequence 1-250 S/s, 2-500 S/s, 3-750 S/s, 4-1000 S/s: ")
         freq = parse(Int,readline())
         print("Choose window (max 15): ")
         window = parse(Int,readline())
@@ -179,50 +179,51 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
         if (mode == 1) & (freq == 1)
             data = "0000"
             payload = create_payload(data,window)
-            println(payload)
             functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
         elseif (mode == 1) & (freq == 2)
             data = "0001"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header,header_GCLAP)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
         elseif (mode == 1) & (freq == 3)
             data = "0010"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
         elseif (mode == 1) & (freq == 4)
             data = "0011"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
         elseif (mode == 2) & (freq == 1)
             data = "0100"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
         elseif (mode == 2) & (freq == 2)
             data = "0101"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
         elseif (mode == 2) & (freq == 3)
-            payload = "0110"
+            data = "0110"
+            payload = create_payload(data,window)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
         elseif (mode == 2) & (freq == 4)
             data = "0111"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
         elseif (mode == 3) & (freq == 1)
             data = "1000"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
         elseif (mode == 3) & (freq == 2)
             data = "1001"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
         elseif (mode == 3) & (freq == 3)
             data = "1010"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
         elseif (mode == 3) & (freq == 4)
             data = "1011"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
         end
     elseif command == "set_group_conf"
         header_IHCFP = "1100"
