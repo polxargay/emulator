@@ -51,11 +51,10 @@ function functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group,header_GC
                 if length(eaxons[i].samples) == 0
                     sample = create_sample(1)
                     push!(eaxons[i].samples,sample)
-                    sample = popfirst!(eaxons[i].samples)
+                    sample = popfirst!(eaxons[i].samples[1])
                     return sample
                 elseif length(eaxons[i].samples) != 0
-                    sample = popfirst!(eaxons[i].samples)
-                    sample = popfirst!(eaxons[i].samples)
+                    sample = popfirst!(eaxons[i].samples[1])
                     return sample
                 end
             elseif (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu) & (eaxons[i].sensing == false)
@@ -92,35 +91,6 @@ function functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group,header_GC
         end
         return string("eAXON with ID  sends ACK")
 
-    elseif command == "start_sensing"
-        for i in 1:length(eaxons)
-            #single FU
-            if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (id_group == 0)
-                if (SubString(eaxons[i].sense_conf,1,2) == "00") & (SubString(eaxons[i].sense_conf,3,4) == "00")
-                    eaxons[i].sensing = true
-                    sample = create_sample(250)
-                    push!(eaxons[i].samples,sample)
-                    eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
-                    return eaxons[i].message
-                end
-            #FU in the same group
-            elseif (id_eaxon == 0) & (eaxons[i].cu_id == id_cu) & (id_group == eaxons[i].group)
-                for j in 1:length(eaxons)
-                    println("hello $(j)")
-                    if (eaxons[j].cu_id == id_cu) & (eaxons[j].group == id_group)
-                        if (SubString(eaxons[j].sense_conf,1,2) == "00") & (SubString(eaxons[j].sense_conf,3,4) == "00")
-                            eaxons[j].sensing = true
-                            sample = create_sample(250)
-                            push!(eaxons[j].samples,sample)
-                            return " "
-                        end
-                    end
-                end
-                return " "
-            end
-        end
-        return string("eAXON with ID  sends ACK")
-
     elseif command == "stop_sensing"
         for i in 1:length(eaxons)
             if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu)
@@ -150,7 +120,7 @@ function functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group,header_GC
             end
         end
 
-    #=elseif command == "start_sensing"
+    elseif command == "start_sensing"
         for i in 1:length(eaxons)
             if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (id_group == 0)
                 if (SubString(eaxons[i].sense_conf,1,2) == "00") & (SubString(eaxons[i].sense_conf,3,4) == "00")
@@ -226,98 +196,70 @@ function functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group,header_GC
                     eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
                     return eaxons[i].message
                 end
-            #=elseif (id_eaxon == 0) & (eaxons[i].cu_id == id_cu) & (id_group == eaxons[i].group)
+            elseif (id_eaxon == 0) & (eaxons[i].cu_id == id_cu) & (id_group == eaxons[i].group)
                 for j in 1:length(eaxons)
-                    #=if (eaxons[j].cu_id == id_cu) & (eaxons[j].group == id_group)
+                    if (eaxons[j].cu_id == id_cu) & (eaxons[j].group == id_group)
                         if (SubString(eaxons[j].sense_conf,1,2) == "00") & (SubString(eaxons[j].sense_conf,3,4) == "00")
                             eaxons[j].sensing = true
                             sample = create_sample(250)
                             push!(eaxons[j].samples,sample)
-                            return " "
                         elseif (SubString(eaxons[j].sense_conf,1,2) == "00") & (SubString(eaxons[j].sense_conf,3,4) == "01")
                             eaxons[j].sensing = true
                             sample = create_sample(500)
                             push!(eaxons[j].samples,sample)
-                            return " "
                         elseif (SubString(eaxons[j].sense_conf,1,2) == "00") & (SubString(eaxons[j].sense_conf,3,4) == "10")
                             eaxons[j].sensing = true
                             sample = create_sample(750)
                             push!(eaxons[j].samples,sample)
-                            return " "
                         elseif (SubString(eaxons[j].sense_conf,1,2) == "00") & (SubString(eaxons[j].sense_conf,3,4) == "11")
                             eaxons[j].sensing = true
                             sample = create_sample(1000)
                             push!(eaxons[j].samples,sample)
-                            return " "
                         elseif (SubString(eaxons[j].sense_conf,1,2) == "01") & (SubString(eaxons[j].sense_conf,3,4) == "00")
                             eaxons[j].sensing = true
                             sample = create_sample(250)
                             push!(eaxons[j].samples,sample)
-                            return " "
                         elseif (SubString(eaxons[j].sense_conf,1,2) == "01") & (SubString(eaxons[j].sense_conf,3,4) == "01")
                             eaxons[j].sensing = true
                             sample = create_sample(500)
                             push!(eaxons[j].samples,sample)
-                            return " "
                         elseif (SubString(eaxons[j].sense_conf,1,2) == "01") & (SubString(eaxons[j].sense_conf,3,4) == "10")
                             eaxons[j].sensing = true
                             sample = create_sample(750)
                             push!(eaxons[j].samples,sample)
-                            return " "
                         elseif (SubString(eaxons[j].sense_conf,1,2) == "01") & (SubString(eaxons[j].sense_conf,3,4) == "11")
                             eaxons[j].sensing = true
                             sample = create_sample(1000)
                             push!(eaxons[j].samples,sample)
-                            return " "
                         elseif (SubString(eaxons[j].sense_conf,1,2) == "11") & (SubString(eaxons[j].sense_conf,3,4) == "00")
                             eaxons[j].sensing = true
                             sample = create_sample(250)
                             push!(eaxons[j].samples,sample)
-                            return " "
                         elseif (SubString(eaxons[j].sense_conf,1,2) == "11") & (SubString(eaxons[j].sense_conf,3,4) == "01")
                             eaxons[j].sensing = true
                             sample = create_sample(500)
                             push!(eaxons[j].samples,sample)
-                            return " "
                         elseif (SubString(eaxons[j].sense_conf,1,2) == "11") & (SubString(eaxons[j].sense_conf,3,4) == "10")
                             eaxons[j].sensing = true
                             sample = create_sample(750)
                             push!(eaxons[j].samples,sample)
-                            return " "
                         elseif (SubString(eaxons[j].sense_conf,1,2) == "11") & (SubString(eaxons[j].sense_conf,3,4) == "11")
                             eaxons[j].sensing = true
                             sample = create_sample(1000)
                             push!(eaxons[j].samples,sample)
-                            return " "
                         end
-                    end=#
-                    if (eaxons[j].cu_id == id_cu) & (eaxons[j].group == id_group) & (SubString(eaxons[j].sense_conf,1,2) == "00") & (SubString(eaxons[j].sense_conf,3,4) == "00")
-                        println("hello")
-                        eaxons[j].sensing = true
-                        sample = create_sample(1)
-                        push!(eaxons[j].samples,sample)
-                        return " "
-                    end
-                end=#
-            elseif (id_eaxon == 0) & (eaxons[i].cu_id == id_cu) & (id_group == eaxons[i].group)
-                for j in 1:length(eaxons)
-                    println("hello")
-                    if (eaxons[j].cu_id == id_cu) & (eaxons[j].group == id_group) & (SubString(eaxons[j].sense_conf,1,2) == "00") & (SubString(eaxons[j].sense_conf,3,4) == "00")
-                        eaxons[j].sensing = true
-                        sample = create_sample(1)
-                        push!(eaxons[j].samples,sample)
-                        return " "
                     end
                 end
                 return " "
             end
         end
-=#
+
     elseif command == "get_sample"
         for i in 1:length(eaxons)
-            if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
-                last_sample = eaxons[i].samples[length(eaxons[i].samples)]
-                return last_sample
+            if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu)
+                #last_sample = eaxons[i].samples[length(eaxons[i].samples)]
+                sample = popfirst!(eaxons[i].samples[1])
+                return sample
             end
         end
 
