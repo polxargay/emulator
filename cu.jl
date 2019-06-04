@@ -98,7 +98,7 @@ end
     reset --> fet
     stop_sensing --> fet
     ping_FU --> fet
-    stimulate --> no sé què he de simular
+    stimulate --> no sé què he de simular per fer aquest estimulació
     start_sensing --> fet --> falta definir com fer servir la Window!!!!!!
     get_sample --> fet
     get_stimulation_conf --> fet

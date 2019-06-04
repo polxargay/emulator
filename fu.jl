@@ -49,7 +49,7 @@ function functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group,header_GC
                 #return the last sample generated
                 #f_sample = create_sample(1)
                 if length(eaxons[i].samples) == 0
-                    sample = create_sample(1)
+                    sample = create_sample(1,0,0)
                     push!(eaxons[i].samples,sample)
                     sample = popfirst!(eaxons[i].samples[1])
                     return sample
@@ -125,74 +125,85 @@ function functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group,header_GC
             if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (id_group == 0)
                 if (SubString(eaxons[i].sense_conf,1,2) == "00") & (SubString(eaxons[i].sense_conf,3,4) == "00")
                     eaxons[i].sensing = true
-                    sample = create_sample(250)
+                    sample = create_sample(250,SubString(eaxons[i].sense_conf,1,2),SubString(eaxons[i].sense_conf,5,8))
                     push!(eaxons[i].samples,sample)
                     eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
                     return eaxons[i].message
                 elseif (SubString(eaxons[i].sense_conf,1,2) == "00") & (SubString(eaxons[i].sense_conf,3,4) == "01")
                     eaxons[i].sensing = true
-                    sample = create_sample(500)
-                    push!(eaxons[i].samples,sample)
+                    samples,parameters = create_sample(500,SubString(eaxons[i].sense_conf,1,2),SubString(eaxons[i].sense_conf,5,8))
+                    push!(eaxons[i].parameters,parameters)
+                    push!(eaxons[i].samples,samples)
                     eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
                     return eaxons[i].message
                 elseif (SubString(eaxons[i].sense_conf,1,2) == "00") & (SubString(eaxons[i].sense_conf,3,4) == "10")
                     eaxons[i].sensing = true
-                    sample = create_sample(750)
-                    push!(eaxons[i].samples,sample)
+                    samples,parameters = create_sample(750,SubString(eaxons[i].sense_conf,1,2),SubString(eaxons[i].sense_conf,5,8))
+                    push!(eaxons[i].parameters,parameters)
+                    push!(eaxons[i].samples,samples)
                     eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
                     return eaxons[i].message
                 elseif (SubString(eaxons[i].sense_conf,1,2) == "00") & (SubString(eaxons[i].sense_conf,3,4) == "11")
                     eaxons[i].sensing = true
-                    sample = create_sample(1000)
-                    push!(eaxons[i].samples,sample)
+                    samples,parameters = create_sample(1000,SubString(eaxons[i].sense_conf,1,2),SubString(eaxons[i].sense_conf,5,8))
+                    push!(eaxons[i].parameters,parameters)
+                    push!(eaxons[i].samples,samples)
                     eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
                     return eaxons[i].message
                 elseif (SubString(eaxons[i].sense_conf,1,2) == "01") & (SubString(eaxons[i].sense_conf,3,4) == "00")
                     eaxons[i].sensing = true
-                    sample = create_sample(250)
-                    push!(eaxons[i].samples,sample)
+                    samples,parameters = create_sample(250,SubString(eaxons[i].sense_conf,1,2),SubString(eaxons[i].sense_conf,5,8))
+                    push!(eaxons[i].parameters,parameters)
+                    push!(eaxons[i].samples,samples)
                     eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
                     return eaxons[i].message
                 elseif (SubString(eaxons[i].sense_conf,1,2) == "01") & (SubString(eaxons[i].sense_conf,3,4) == "01")
                     eaxons[i].sensing = true
-                    sample = create_sample(500)
-                    push!(eaxons[i].samples,sample)
+                    samples,parameters = create_sample(500,SubString(eaxons[i].sense_conf,1,2),SubString(eaxons[i].sense_conf,5,8))
+                    push!(eaxons[i].parameters,parameters)
+                    push!(eaxons[i].samples,samples)
                     eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
                     return eaxons[i].message
                 elseif (SubString(eaxons[i].sense_conf,1,2) == "01") & (SubString(eaxons[i].sense_conf,3,4) == "10")
                     eaxons[i].sensing = true
-                    sample = create_sample(750)
-                    push!(eaxons[i].samples,sample)
+                    samples,parameters = create_sample(750,SubString(eaxons[i].sense_conf,1,2),SubString(eaxons[i].sense_conf,5,8))
+                    push!(eaxons[i].parameters,parameters)
+                    push!(eaxons[i].samples,samples)
                     eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
                     return eaxons[i].message
                 elseif (SubString(eaxons[i].sense_conf,1,2) == "01") & (SubString(eaxons[i].sense_conf,3,4) == "11")
                     eaxons[i].sensing = true
-                    sample = create_sample(1000)
-                    push!(eaxons[i].samples,sample)
+                    samples,parameters = create_sample(1000,SubString(eaxons[i].sense_conf,1,2),SubString(eaxons[i].sense_conf,5,8))
+                    push!(eaxons[i].parameters,parameters)
+                    push!(eaxons[i].samples,samples)
                     eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
                     return eaxons[i].message
-                elseif (SubString(eaxons[i].sense_conf,1,2) == "11") & (SubString(eaxons[i].sense_conf,3,4) == "00")
+                elseif (SubString(eaxons[i].sense_conf,1,2) == "10") & (SubString(eaxons[i].sense_conf,3,4) == "00")
                     eaxons[i].sensing = true
-                    sample = create_sample(250)
-                    push!(eaxons[i].samples,sample)
+                    samples,parameters = create_sample(250,SubString(eaxons[i].sense_conf,1,2),SubString(eaxons[i].sense_conf,5,8))
+                    push!(eaxons[i].parameters,parameters)
+                    push!(eaxons[i].samples,samples)
                     eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
                     return eaxons[i].message
-                elseif (SubString(eaxons[i].sense_conf,1,2) == "11") & (SubString(eaxons[i].sense_conf,3,4) == "01")
+                elseif (SubString(eaxons[i].sense_conf,1,2) == "10") & (SubString(eaxons[i].sense_conf,3,4) == "01")
                     eaxons[i].sensing = true
-                    sample = create_sample(500)
-                    push!(eaxons[i].samples,sample)
+                    samples,parameters = create_sample(500,SubString(eaxons[i].sense_conf,1,2),SubString(eaxons[i].sense_conf,5,8))
+                    push!(eaxons[i].parameters,parameters)
+                    push!(eaxons[i].samples,samples)
                     eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
                     return eaxons[i].message
-                elseif (SubString(eaxons[i].sense_conf,1,2) == "11") & (SubString(eaxons[i].sense_conf,3,4) == "10")
+                elseif (SubString(eaxons[i].sense_conf,1,2) == "10") & (SubString(eaxons[i].sense_conf,3,4) == "10")
                     eaxons[i].sensing = true
-                    sample = create_sample(750)
-                    push!(eaxons[i].samples,sample)
+                    samples,parameters = create_sample(750,SubString(eaxons[i].sense_conf,1,2),SubString(eaxons[i].sense_conf,5,8))
+                    push!(eaxons[i].parameters,parameters)
+                    push!(eaxons[i].samples,samples)
                     eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
                     return eaxons[i].message
-                elseif (SubString(eaxons[i].sense_conf,1,2) == "11") & (SubString(eaxons[i].sense_conf,3,4) == "11")
+                elseif (SubString(eaxons[i].sense_conf,1,2) == "10") & (SubString(eaxons[i].sense_conf,3,4) == "11")
                     eaxons[i].sensing = true
-                    sample = create_sample(1000)
-                    push!(eaxons[i].samples,sample)
+                    samples,parameters = create_sample(1000,SubString(eaxons[i].sense_conf,1,2),SubString(eaxons[i].sense_conf,5,8))
+                    push!(eaxons[i].parameters,parameters)
+                    push!(eaxons[i].samples,samples)
                     eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
                     return eaxons[i].message
                 end
@@ -256,10 +267,14 @@ function functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group,header_GC
 
     elseif command == "get_sample"
         for i in 1:length(eaxons)
-            if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu)
+            if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu) & (SubString(eaxons[i].sense_conf,1,2) == "00")
                 #last_sample = eaxons[i].samples[length(eaxons[i].samples)]
                 sample = popfirst!(eaxons[i].samples[1])
                 return sample
+            elseif (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu) & (SubString(eaxons[i].sense_conf,1,2) != "00")
+                parameter = popfirst!(eaxons[i].parameters[1])
+                eaxons[i].samples = []
+                return parameter
             end
         end
 
@@ -394,10 +409,39 @@ function functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHC
 end
 
 #create random samples
-function create_sample(nsamples)
+function create_sample(nsamples,mode,window)
     samples = []
-    for x in 1:nsamples
-        push!(samples,"sample $(x)")
+    parameters = []
+    window = parse(Int,window,base=2)
+    j=window+1#counter in order to know when we have reached the window limit
+
+    if mode == "00"
+        for x in 1:nsamples
+            push!(samples,"sample $(x)")
+        end
+        return samples
+    elseif mode == "01"
+        for x in 1:window
+            push!(samples,"sample $(x)")
+            if x == window
+                while j <= nsamples
+                    push!(parameters,"RAW parameter $(j)")
+                    j = j+window
+                end
+            end
+        end
+        return samples,parameters
+    elseif mode == "10"
+        for x in 1:window
+            push!(samples,"sample $(x)")
+            if x == window
+                while j <= nsamples
+                    push!(parameters,"zero-crossing parameter $(j)")
+                    j = j+window
+                end
+            end
+        end
+        return samples,parameters
     end
-    return samples
+    println(parameters)
 end
