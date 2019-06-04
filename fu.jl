@@ -50,19 +50,22 @@ function functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,head
                 #return the last sample generated
                 #f_sample = create_sample(1)
                 if length(eaxons[i].samples) <= 0
-                    sample = create_sample(1,0,0)
+                    sample = create_sample(1,"00","00")
                     push!(eaxons[i].samples,sample)
-                    sample = popfirst!(eaxons[i].samples[1])
+                    sample = popfirst!(eaxons[i].samples)
                     if channel() == true
-                        println("true")
                         return sample
                     elseif channel() == false
                         println("false")
                         return string("packet lost - uplink")
                     end
                 elseif length(eaxons[i].samples) >= 0
-                    sample = popfirst!(eaxons[i].samples[1])
-                    return sample
+                    sample = popfirst!(eaxons[i].samples)
+                    if channel() == true
+                        return sample
+                    elseif channel() == false
+                        return string("packet lost - uplink")
+                    end
                 end
             elseif (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu) & (eaxons[i].sensing == false)
                 return string("FU is not sensing")
@@ -455,5 +458,4 @@ function create_sample(nsamples,mode,window)
         end
         return samples,parameters
     end
-    println(parameters)
 end

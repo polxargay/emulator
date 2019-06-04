@@ -134,7 +134,6 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
             println(response)
         elseif channel() == false
-            println("false")
             println("packet lost - downlink")
         end
     elseif command == "reset"
