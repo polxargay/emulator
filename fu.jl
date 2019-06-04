@@ -41,19 +41,26 @@ end
 #************* RESPONSES FOR THE SECONDARY NETWORK *****************
 #*******************************************************************
 
-function functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group,header_GCLAP)
+function functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
 
-    if command == "fast_sample"
+    #fast_sample command
+    if header_IHCFP == "0000"
         for i in 1:length(eaxons)
             if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu) & (eaxons[i].sensing == true)
                 #return the last sample generated
                 #f_sample = create_sample(1)
-                if length(eaxons[i].samples) == 0
+                if length(eaxons[i].samples) <= 0
                     sample = create_sample(1,0,0)
                     push!(eaxons[i].samples,sample)
                     sample = popfirst!(eaxons[i].samples[1])
-                    return sample
-                elseif length(eaxons[i].samples) != 0
+                    if channel() == true
+                        println("true")
+                        return sample
+                    elseif channel() == false
+                        println("false")
+                        return string("packet lost - uplink")
+                    end
+                elseif length(eaxons[i].samples) >= 0
                     sample = popfirst!(eaxons[i].samples[1])
                     return sample
                 end
@@ -61,8 +68,8 @@ function functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group,header_GC
                 return string("FU is not sensing")
             end
         end
-
-    elseif command == "reset"
+    #reset command
+    elseif header_IHCFP == "0001"
         for i in 1:length(eaxons)
             #single FU
             if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (id_group == 0)
@@ -90,8 +97,8 @@ function functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group,header_GC
             end
         end
         return string("eAXON with ID  sends ACK")
-
-    elseif command == "stop_sensing"
+    #stop_sensing command
+    elseif header_IHCFP == "0010"
         for i in 1:length(eaxons)
             if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu)
                 eaxons[i].sensing = false
@@ -102,16 +109,22 @@ function functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group,header_GC
                 return " "
             end
         end
-
-    elseif command == "ping_fu"
+    #ping_fu command
+    elseif header_IHCFP == "0011"
+        x=0
         for i in 1:length(eaxons)
-            if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
+            if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu)
                 eaxons[i].message = string("eAXON with ID ", eaxons[i].id," sends ACK")
-                return eaxons[i].message
+                x = i
+                if channel() == true#if there's no error transmition send the message
+                    return eaxons[x].message
+                elseif channel() == false#if there's a transmition error send error message (theoretically shouldn't send anything, but so I know what happened)
+                    return string("packet lost - uplink")
+                end
             end
         end
-
-    elseif command == "stimulate"
+    #stimulate command
+    elseif header_IHCFP == "0100"
         for i in 1:length(eaxons)
             if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu)
                 return " "
@@ -119,8 +132,8 @@ function functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group,header_GC
                 return " "
             end
         end
-
-    elseif command == "start_sensing"
+    #start_sensing command
+    elseif header_IHCFP == "0101"
         for i in 1:length(eaxons)
             if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (id_group == 0)
                 if (SubString(eaxons[i].sense_conf,1,2) == "00") & (SubString(eaxons[i].sense_conf,3,4) == "00")
@@ -154,7 +167,7 @@ function functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group,header_GC
                     eaxons[i].sensing = true
                     samples,parameters = create_sample(250,SubString(eaxons[i].sense_conf,1,2),SubString(eaxons[i].sense_conf,5,8))
                     push!(eaxons[i].parameters,parameters)
-                    push!(eaxons[i].samples,samples)
+                    push!(eaxons[i].samples,samples[1])
                     eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
                     return eaxons[i].message
                 elseif (SubString(eaxons[i].sense_conf,1,2) == "01") & (SubString(eaxons[i].sense_conf,3,4) == "01")
@@ -264,8 +277,8 @@ function functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group,header_GC
                 return " "
             end
         end
-
-    elseif command == "get_sample"
+    #get_sample command
+    elseif header_IHCFP == "0110"
         for i in 1:length(eaxons)
             if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu) & (SubString(eaxons[i].sense_conf,1,2) == "00")
                 #last_sample = eaxons[i].samples[length(eaxons[i].samples)]
@@ -277,30 +290,29 @@ function functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group,header_GC
                 return parameter
             end
         end
-
-    elseif command == "get_stimulation_conf"
+    #get_stimulation_conf command
+    elseif header_IHCFP == "0111"
         for i in 1:length(eaxons)
             if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
                 return message = string("eAXON with ID ", eaxons[i].id, " sends stimulation configuration: ", eaxons[i].stimulation_conf)
             end
         end
-
-    elseif command == "get_sensing_conf"
+    #get_sensing_conf command
+    elseif header_IHCFP == "1000"
         for i in 1:length(eaxons)
             if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
                 eaxons[i].message = string("eAXON with ID ", eaxons[i].id, " sends sensing configuration: ", eaxons[i].sense_conf)
                 return eaxons[i].message
             end
         end
-
-    elseif command == "get_efuse"
+    #get_efuse command
+    elseif header_IHCFP == "1111"
         for i in 1:length(eaxons)
             if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
                 eaxons[i].message = string("eAXON with ID ", eaxons[i].id, " sends efuse value: ", eaxons[i].efuse_value)
                 return eaxons[i].message
             end
         end
-
     end
 end
 

@@ -126,13 +126,68 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
     data = ""
 
     ##**************Commands which don't need payload***************
-    if (command == "fast_sample") | (command == "reset") | (command == "stop_sensing") |
-    (command =="ping_fu") | (command =="stimulate") | (command =="start_sensing") |
-    (command == "get_sample") | (command =="get_stimulation_conf") | (command == "get_sensing_conf") |
-    (command == "get_efuse")
-            header_GCLAP = "01"
-            response = functional_unit_cu_wo_payload(command,id_eaxon,id_cu,id_group,header_GCLAP)
+    if (command == "fast_sample")
+        header_GCLAP = "01"
+        header_IHCFP = "0000"
+        if channel() == true
+            println("true")
+            response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
             println(response)
+        elseif channel() == false
+            println("false")
+            println("packet lost - downlink")
+        end
+    elseif command == "reset"
+        header_GCLAP = "01"
+        header_IHCFP = "0001"
+        response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+        println(response)
+    elseif command == "stop_sensing"
+        header_GCLAP = "01"
+        header_IHCFP = "0010"
+        response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+        println(response)
+    elseif command =="ping_fu"
+        header_GCLAP = "01"
+        header_IHCFP = "0011"
+        if channel() == true
+            println("true")
+            response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            println(response)
+        elseif channel() == false
+            println("false")
+            println("packet lost - downlink")
+        end
+    elseif command =="stimulate"
+        header_GCLAP = "01"
+        header_IHCFP = "0100"
+        response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+        println(response)
+    elseif command =="start_sensing"
+        header_GCLAP = "01"
+        header_IHCFP = "0101"
+        response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+        println(response)
+    elseif command == "get_sample"
+        header_GCLAP = "01"
+        header_IHCFP = "0110"
+        response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+        println(response)
+    elseif command =="get_stimulation_conf"
+        header_GCLAP = "01"
+        header_IHCFP = "0111"
+        response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+        println(response)
+    elseif command == "get_sensing_conf"
+        header_GCLAP = "01"
+        header_IHCFP = "1000"
+        response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+        println(response)
+    elseif command == "get_efuse"
+        header_GCLAP = "01"
+        header_IHCFP = "1111"
+        response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+        println(response)
 
     ##***************Commands which need payload*****************
 
