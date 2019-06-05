@@ -333,7 +333,7 @@ function functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHC
     #set_group_conf command --> add to group
     elseif (payload == "1111") & (header_IHCFP == "1100")
         for i in 1:length(eaxons)
-            if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
+            if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu)
                 eaxons[i].group = id_group
                 eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
                 return eaxons[i].message
@@ -343,9 +343,9 @@ function functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHC
     #set_stimulation_conf command (Anode - Cathode)
     elseif (payload == "00000000") & (header_IHCFP == "1010")
         for i in 1:length(eaxons)
-            if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu)
+            if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (id_group == 0)
                 eaxons[i].stimulation_conf = "00000000"
-            elseif (eaxons[i].cu_id == id_cu) & (id_group == eaxons[i].group)
+            elseif (id_eaxon == 0) & (eaxons[i].cu_id == id_cu) & (id_group == eaxons[i].group)
                 for j in 1:length(eaxons)
                     if (eaxons[j].cu_id == id_cu) & (eaxons[j].group == id_group)
                         eaxons[j].stimulation_conf = "00000000"
@@ -356,9 +356,9 @@ function functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHC
     #set_stimulation_conf command (Cathode - Anode)
     elseif (payload == "11111111") & (header_IHCFP == "1010")
         for i in 1:length(eaxons)
-            if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu)
+            if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (id_group == 0)
                 eaxons[i].stimulation_conf = "11111111"
-            elseif (eaxons[i].cu_id == id_cu) & (id_group == eaxons[i].group)
+            elseif (id_eaxon == 0) & (eaxons[i].cu_id == id_cu) & (id_group == eaxons[i].group)
                 for j in 1:length(eaxons)
                     if (eaxons[j].cu_id == id_cu) & (eaxons[j].group == id_group)
                         eaxons[j].stimulation_conf = "11111111"
@@ -371,10 +371,10 @@ function functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHC
     elseif (header_IHCFP == "1011")
         for i in 1:length(eaxons)
             #Single FU
-            if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu)
+            if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (id_group == 0)
                 eaxons[i].sense_conf = string(payload)
             #FU in the same group
-            elseif (eaxons[i].cu_id == id_cu) & (id_group == eaxons[i].group)
+            elseif (id_eaxon == 0) & (eaxons[i].cu_id == id_cu) & (id_group == eaxons[i].group)
                 for j in 1:length(eaxons)
                     if (eaxons[j].cu_id == id_cu) & (eaxons[j].group == id_group)
                         eaxons[j].sense_conf = string(payload)
@@ -386,19 +386,19 @@ function functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHC
     #get_group_conf command (is in group?)
     elseif (SubString(payload,5,8) == "0000")&(header_IHCFP == "1001")
         for i in 1:length(eaxons)
-            if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (eaxons[i].group == id_group)
+            if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (id_group == eaxons[i].group)
                 eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
                 return eaxons[i].message
-            elseif (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (eaxons[i].group != id_group)
+            elseif (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (id_group != eaxons[i].group)
                 return " "
             end
         end
     #get_group_conf command (is out of group?)
     elseif (SubString(payload,5,8) == "1111")&(header_IHCFP == "1001")
         for i in 1:length(eaxons)
-            if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (eaxons[i].group == id_group)
+            if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (id_group != eaxons[i].group)
                 return " "
-            elseif (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (eaxons[i].group != id_group)
+            elseif (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (id_group == eaxons[i].group)
                 eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
                 return eaxons[i].message
             end

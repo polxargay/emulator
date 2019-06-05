@@ -130,7 +130,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
         header_GCLAP = "01"
         header_IHCFP = "0000"
         if channel() == true
-            println("true")
+            #println("true")
             response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
             println(response)
         elseif channel() == false
