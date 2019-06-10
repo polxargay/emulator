@@ -30,25 +30,13 @@ function create_eaxon(neaxons,cu_id)
         #al final de l'array eaxons[], afegeixo els eaxons creats
         push!(eaxons,EAXON(x,0,cu_id,[],[]))
     end
-    #println(eaxons)
-    #return eaxons
 end
 
-#=function initialize_values(ncu,neaxons)
-    for i in 1:ncu
-        for j in 1:neaxons
-            if (eaxons[j].id == j) & (eaxons[j].cu_id == i)
-                eaxons[j].samples = []
-            end
-
-        end
-    end
-end=#
 
 function create_environment(ncu,neaxons)
     for x in 1:ncu
         push!(cus,CU(x,0,0))
         create_eaxon(neaxons,x)
     end
-    println(eaxons)
+    return eaxons
 end

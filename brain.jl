@@ -23,6 +23,6 @@ end
 
 #communication module for the functional unit
 function brain_fu(command,id_cu,id_fu)
-    response = functional_unit_brain(id_eaxon,id_cu)
+    response = functional_unit_brain(command,id_eaxon,id_cu,id_group)
     println(response)
 end

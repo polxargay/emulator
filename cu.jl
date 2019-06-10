@@ -150,11 +150,9 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
         header_GCLAP = "01"
         header_IHCFP = "0011"
         if channel() == true
-            println("true")
             response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
             println(response)
         elseif channel() == false
-            println("false")
             println("packet lost - downlink")
         end
     elseif command =="stimulate"
@@ -312,7 +310,6 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
 
         functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
     end
-
 end
 
 #create payload for set_sensing_conf
