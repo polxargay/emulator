@@ -115,9 +115,9 @@ end
 
 #if there is no group defined, must put 0 in id_group field
 function cu_fu(command,id_eaxon,id_cu,id_group)
-    payload = "" #initialize payload variable
-    header_IHCFP = "" #initialize header variable
-    header_GCLAP = "" #Initialize GCLAP header
+    payload = " " #initialize payload variable
+    header_IHCFP = " " #initialize header variable
+    header_GCLAP = " " #Initialize GCLAP header
 
     #initialize variables for the set_sensing_conf command
     mode = ""

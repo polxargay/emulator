@@ -305,14 +305,16 @@ function functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,head
     #get_sample command
     elseif header_IHCFP == "0110"
         for i in 1:length(eaxons)
-            if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu) & (SubString(eaxons[i].sense_conf,1,2) == "00")
+
+            if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu) & (SubString(eaxons[i].sense_conf,1,2) == ("00"))
                 #last_sample = eaxons[i].samples[length(eaxons[i].samples)]
-                sample = popfirst!(eaxons[i].samples)
+                sample = popfirst!(eaxons[i].samples[1])
                 return sample
             elseif (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu) & (SubString(eaxons[i].sense_conf,1,2) != ("00"))
+                #println("hello")
                 parameter = popfirst!(eaxons[i].parameters[1])
                 eaxons[i].samples = []
-                return parameter
+                return string(parameter)
             end
         end
     #get_stimulation_conf command
@@ -463,7 +465,7 @@ function create_sample(nsamples,mode,window)
             push!(samples,"sample $(x)")
             if x == window
                 while j <= nsamples
-                    push!(parameters,"RAW parameter $(j)")
+                    push!(parameters,"RMS parameter $(j)")
                     j = j+window
                 end
             end
