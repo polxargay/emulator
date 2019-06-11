@@ -99,7 +99,11 @@ function functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,head
                 eaxons[i].sense_conf = " "
                 eaxons[i].stimulation_conf = " "
                 eaxons[i].sensing = false
-                return string("eAXON with ID ", eaxons[i].id," sends ACK")
+                if channel() == true
+                    return string("eAXON with ID ", eaxons[i].id," sends ACK")
+                elseif channel() == false
+                    return string("packet lost - uplink")
+                end
             #FU in the same group
             elseif (id_eaxon == 0) & (eaxons[i].cu_id == id_cu) & (id_group == eaxons[i].group)
                 for j in 1:length(eaxons)
@@ -305,16 +309,21 @@ function functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,head
     #get_sample command
     elseif header_IHCFP == "0110"
         for i in 1:length(eaxons)
-
             if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu) & (SubString(eaxons[i].sense_conf,1,2) == ("00"))
-                #last_sample = eaxons[i].samples[length(eaxons[i].samples)]
                 sample = popfirst!(eaxons[i].samples[1])
-                return sample
+                if channel() == true
+                    return sample
+                elseif channel() == false
+                    return string("packet lost - uplink")
+                end
             elseif (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu) & (SubString(eaxons[i].sense_conf,1,2) != ("00"))
-                #println("hello")
                 parameter = popfirst!(eaxons[i].parameters[1])
                 eaxons[i].samples = []
-                return string(parameter)
+                if channel() == true
+                    return string(parameter)
+                elseif channel() == false
+                    return string("packet lost - uplink")
+                end
             end
         end
     #get_stimulation_conf command
@@ -322,7 +331,11 @@ function functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,head
         for i in 1:length(eaxons)
             if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu)
                 eaxons[i].message = string("eAXON with ID ", eaxons[i].id, " sends stimulation configuration: ", eaxons[i].stimulation_conf)
-                return eaxons[i].message
+                if channel() == true
+                    return eaxons[i].message
+                elseif channel() == false
+                    return string("packet lost - uplink")
+                end
             end
         end
     #get_sensing_conf command
@@ -330,7 +343,11 @@ function functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,head
         for i in 1:length(eaxons)
             if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
                 eaxons[i].message = string("eAXON with ID ", eaxons[i].id, " sends sensing configuration: ", eaxons[i].sense_conf)
-                return eaxons[i].message
+                if channel() == true
+                    return eaxons[i].message
+                elseif channel() == false
+                    return string("packet lost - uplink")
+                end
             end
         end
     #get_efuse command
@@ -338,7 +355,11 @@ function functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,head
         for i in 1:length(eaxons)
             if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
                 eaxons[i].message = string("eAXON with ID ", eaxons[i].id, " sends efuse value: ", eaxons[i].efuse_value)
-                return eaxons[i].message
+                if channel() == true
+                    return eaxons[i].message
+                elseif channel() == false
+                    return string("packet lost - uplink")
+                end
             end
         end
     end
@@ -352,7 +373,11 @@ function functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHC
             if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu)
                 eaxons[i].group = 0
                 eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
-                return eaxons[i].message
+                if channel() == true
+                    return eaxons[i].message
+                elseif channel() == false
+                    return string("packet lost - uplink")
+                end
             end
         end
     #set_group_conf command --> add to group
@@ -361,7 +386,11 @@ function functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHC
             if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu)
                 eaxons[i].group = id_group
                 eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
-                return eaxons[i].message
+                if channel() == true
+                    return eaxons[i].message
+                elseif channel() == false
+                    return string("packet lost - uplink")
+                end
             end
         end
 
@@ -413,7 +442,11 @@ function functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHC
         for i in 1:length(eaxons)
             if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (id_group == eaxons[i].group)
                 eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
-                return eaxons[i].message
+                if channel() == true
+                    return eaxons[i].message
+                elseif channel() == false
+                    return string("packet lost - uplink")
+                end
             elseif (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (id_group != eaxons[i].group)
                 return " "
             end
@@ -425,7 +458,11 @@ function functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHC
                 return " "
             elseif (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (id_group == eaxons[i].group)
                 eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
-                return eaxons[i].message
+                if channel() == true
+                    return eaxons[i].message
+                elseif channel() == false
+                    return string("packet lost - uplink")
+                end
             end
         end
 

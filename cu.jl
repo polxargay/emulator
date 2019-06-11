@@ -130,7 +130,6 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
         header_GCLAP = "01"
         header_IHCFP = "0000"
         if channel() == true
-            #println("true")
             response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
             println(response)
         elseif channel() == false
@@ -139,13 +138,21 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
     elseif command == "reset"
         header_GCLAP = "01"
         header_IHCFP = "0001"
-        response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
-        println(response)
+        if channel() == true
+            response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            println(response)
+        elseif channel() == false
+            println("packet lost - downlink")
+        end
     elseif command == "stop_sensing"
         header_GCLAP = "01"
         header_IHCFP = "0010"
-        response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
-        println(response)
+        if channel() == true
+            response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            println(response)
+        elseif channel() == false
+            println("packet lost - downlink")
+        end
     elseif command =="ping_fu"
         header_GCLAP = "01"
         header_IHCFP = "0011"
@@ -158,33 +165,57 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
     elseif command =="stimulate"
         header_GCLAP = "01"
         header_IHCFP = "0100"
-        response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
-        println(response)
+        if channel() == true
+            response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            println(response)
+        elseif channel() == false
+            println("packet lost - downlink")
+        end
     elseif command =="start_sensing"
         header_GCLAP = "01"
         header_IHCFP = "0101"
-        response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
-        println(response)
+        if channel() == true
+            response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            println(response)
+        elseif channel() == false
+            println("packet lost - downlink")
+        end
     elseif command == "get_sample"
         header_GCLAP = "01"
         header_IHCFP = "0110"
-        response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
-        println(response)
+        if channel() == true
+            response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            println(response)
+        elseif channel() == false
+            println("packet lost - downlink")
+        end
     elseif command =="get_stimulation_conf"
         header_GCLAP = "01"
         header_IHCFP = "0111"
-        response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
-        println(response)
+        if channel() == true
+            response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            println(response)
+        elseif channel() == false
+            println("packet lost - downlink")
+        end
     elseif command == "get_sensing_conf"
         header_GCLAP = "01"
         header_IHCFP = "1000"
-        response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
-        println(response)
+        if channel() == true
+            response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            println(response)
+        elseif channel() == false
+            println("packet lost - downlink")
+        end
     elseif command == "get_efuse"
         header_GCLAP = "01"
         header_IHCFP = "1111"
-        response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
-        println(response)
+        if channel() == true
+            response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            println(response)
+        elseif channel() == false
+            println("packet lost - downlink")
+        end
 
     ##***************Commands which need payload*****************
 
@@ -201,8 +232,12 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             payload = string(group,"1111")
         end
 
-        response = functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
-        println(response)
+        if channel() == true
+            response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            println(response)
+        elseif channel() == false
+            println("packet lost - downlink")
+        end
     elseif command == "set_stimulation_conf"
         header_IHCFP = "1010"
         header_GCLAP = "10"
@@ -215,7 +250,11 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             payload = "11111111"
         end
 
-        functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
+        if channel() == true
+            functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+        elseif channel() == false
+            println("packet lost - downlink")
+        end
     elseif command == "set_sensing_conf"
         header_IHCFP = "1011"
         header_GCLAP = "10"
@@ -231,51 +270,100 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
         if (mode == 1) & (freq == 1)
             data = "0000"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
+            if channel() == true
+                println("true")
+                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            elseif channel() == false
+                println("packet lost - downlink")
+            end
         elseif (mode == 1) & (freq == 2)
             data = "0001"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
+            if channel() == true
+                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            elseif channel() == false
+                println("packet lost - downlink")
+            end
         elseif (mode == 1) & (freq == 3)
             data = "0010"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
+            if channel() == true
+                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            elseif channel() == false
+                println("packet lost - downlink")
+            end
         elseif (mode == 1) & (freq == 4)
             data = "0011"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
+            if channel() == true
+                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            elseif channel() == false
+                println("packet lost - downlink")
+            end
         elseif (mode == 2) & (freq == 1)
             data = "0100"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
+            if channel() == true
+                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            elseif channel() == false
+                println("packet lost - downlink")
+            end
         elseif (mode == 2) & (freq == 2)
             data = "0101"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
+            if channel() == true
+                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            elseif channel() == false
+                println("packet lost - downlink")
+            end
         elseif (mode == 2) & (freq == 3)
             data = "0110"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
+            if channel() == true
+                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            elseif channel() == false
+                println("packet lost - downlink")
+            end
         elseif (mode == 2) & (freq == 4)
             data = "0111"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
+            if channel() == true
+                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            elseif channel() == false
+                println("packet lost - downlink")
+            end
         elseif (mode == 3) & (freq == 1)
             data = "1000"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
+            if channel() == true
+                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            elseif channel() == false
+                println("packet lost - downlink")
+            end
         elseif (mode == 3) & (freq == 2)
             data = "1001"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
+            if channel() == true
+                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            elseif channel() == false
+                println("packet lost - downlink")
+            end
         elseif (mode == 3) & (freq == 3)
             data = "1010"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
+            if channel() == true
+                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            elseif channel() == false
+                println("packet lost - downlink")
+            end
         elseif (mode == 3) & (freq == 4)
             data = "1011"
             payload = create_payload(data,window)
-            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
+            if channel() == true
+                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            elseif channel() == false
+                println("packet lost - downlink")
+            end
         end
     elseif command == "set_group_conf"
         header_IHCFP = "1100"
@@ -289,8 +377,12 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             payload = "1111"
         end
 
-        response = functional_unit_cu_w_payload(id_eaxon,id_cu,group,payload,header_IHCFP,header_GCLAP)
-        println(response)
+        if channel() == true
+            response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            println(response)
+        elseif channel() == false
+            println("packet lost - downlink")
+        end
     elseif command == "set_uplink_limit"
         header_IHCFP = "1101"
         header_GCLAP = "10"
@@ -299,7 +391,11 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
         uplink_limit = string(uplink_limit,base=2,pad=8)
         payload = uplink_limit
 
-        functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
+        if channel() == true
+            functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+        elseif channel() == false
+            println("packet lost - downlink")
+        end
     elseif command == "set_efuse"
         header_IHCFP = "1110"
         header_GCLAP = "11"
@@ -308,7 +404,11 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
         efuse_value = string(efuse_value,base=2,pad=32)
         payload = efuse_value
 
-        functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
+        if channel() == true
+            functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+        elseif channel() == false
+            println("packet lost - downlink")
+        end
     end
 end
 
