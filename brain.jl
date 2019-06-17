@@ -22,7 +22,11 @@ function brain_cu(command,id_cu)
 end
 
 #communication module for the functional unit
-function brain_fu(command,id_cu,id_fu)
-    response = functional_unit_brain(command,id_eaxon,id_cu,id_group)
-    println(response)
+function brain_fu(command,id_eaxon,id_cu,id_group)
+    if channel() == true
+        response = functional_unit_brain(command,id_eaxon,id_cu,id_group)
+        return response
+    elseif channel() == false
+        return string("packet lost - downlink")
+    end
 end

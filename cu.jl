@@ -158,9 +158,12 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
         header_IHCFP = "0011"
         if channel() == true
             response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
-            println(response)
+            #println(response)
+            return response
         elseif channel() == false
-            println("packet lost - downlink")
+            response = string("packet lost - downlink")
+            #println(response)
+            return response
         end
     elseif command =="stimulate"
         header_GCLAP = "01"

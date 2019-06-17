@@ -41,14 +41,13 @@ function functional_unit_brain(command,id_eaxon,id_cu,id_group)
         return eaxons[x].message
 
     elseif command == "ping_fu"
-        x = 0 #initialize value in order to found the corresponding eAXON
         for i in 1:length(eaxons)
-            if eaxons[i].id == id_eaxon && eaxons[i].cu_id == id_cu
-                x = i #assign the corresponding eAXON to "x"
+            if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu) & (id_group == 0)
                 eaxons[i].message = string("eaxon with ID ", eaxons[i].id, " sends ACK")
+                message = eaxons[i].message
+                return message
             end
         end
-        return eaxons[x].message #return the ACK message
 
     elseif command == "stimulate"
 
@@ -138,12 +137,16 @@ function functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,head
         end
     #ping_fu command
     elseif header_IHCFP == "0011"
+        #x = 0
         for i in 1:length(eaxons)
-            if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu)
+            if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu) & (id_group == 0)
+                x = i
                 eaxons[i].message = string("eAXON with ID ", eaxons[i].id," sends ACK")
                 if channel() == true#if there's no error transmition send the message
-                    return eaxons[i].message
+                    println("Hello1")
+                    return "hello"
                 elseif channel() == false#if there's a transmition error send error message (theoretically shouldn't send anything, but so I know what happened)
+                    println("hello2")
                     return string("packet lost - uplink")
                 end
             end
