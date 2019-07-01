@@ -106,7 +106,6 @@ function functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,head
             #FU in the same group
             elseif (id_eaxon == 0) & (eaxons[i].cu_id == id_cu) & (id_group == eaxons[i].group)
                 for j in 1:length(eaxons)
-
                     if (eaxons[j].cu_id == id_cu) & (eaxons[j].group == id_group)
                         eaxons[j].group = 0
                         eaxons[j].samples = []
@@ -143,10 +142,8 @@ function functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,head
                 x = i
                 eaxons[i].message = string("eAXON with ID ", eaxons[i].id," sends ACK")
                 if channel() == true#if there's no error transmition send the message
-                    println("Hello1")
-                    return "hello"
+                    return eaxons[i].message
                 elseif channel() == false#if there's a transmition error send error message (theoretically shouldn't send anything, but so I know what happened)
-                    println("hello2")
                     return string("packet lost - uplink")
                 end
             end

@@ -4,13 +4,13 @@ mutable struct EAXON
     cu_id::Int64
     samples #es pot posar com un array????????
     parameters
-    message
-    sense_conf
-    stimulation_conf
+    message::String
+    sense_conf::String
+    stimulation_conf::String
     uplink_limit
     efuse_value
     sensing::Bool
-    EAXON(x,y,z,j,i) = new(x,y,z,j,i)
+    EAXON(x,y,z,j,i,m,n,o) = new(x,y,z,j,i,m,n,o)
 end
 
 mutable struct CU
@@ -28,7 +28,7 @@ cus = CU[]
 function create_eaxon(neaxons,cu_id)
     for x in 1:neaxons
         #al final de l'array eaxons[], afegeixo els eaxons creats
-        push!(eaxons,EAXON(x,0,cu_id,[],[]))
+        push!(eaxons,EAXON(x,0,cu_id,[],[],"xx","xx","xx"))
     end
 end
 
