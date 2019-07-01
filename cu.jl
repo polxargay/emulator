@@ -381,7 +381,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
         end
 
         if channel() == true
-            response = functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
+            response = functional_unit_cu_w_payload(id_eaxon,id_cu,group,payload,header_IHCFP,header_GCLAP)
             println(response)
         elseif channel() == false
             println("packet lost - downlink")
