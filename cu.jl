@@ -236,7 +236,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
         end
 
         if channel() == true
-            response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            response = functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
             println(response)
         elseif channel() == false
             println("packet lost - downlink")
@@ -254,7 +254,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
         end
 
         if channel() == true
-            functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
         elseif channel() == false
             println("packet lost - downlink")
         end
@@ -275,7 +275,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             payload = create_payload(data,window)
             if channel() == true
                 println("true")
-                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+                functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
             elseif channel() == false
                 println("packet lost - downlink")
             end
@@ -283,7 +283,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             data = "0001"
             payload = create_payload(data,window)
             if channel() == true
-                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+                functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
             elseif channel() == false
                 println("packet lost - downlink")
             end
@@ -291,7 +291,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             data = "0010"
             payload = create_payload(data,window)
             if channel() == true
-                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+                functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
             elseif channel() == false
                 println("packet lost - downlink")
             end
@@ -299,7 +299,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             data = "0011"
             payload = create_payload(data,window)
             if channel() == true
-                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+                functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
             elseif channel() == false
                 println("packet lost - downlink")
             end
@@ -307,7 +307,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             data = "0100"
             payload = create_payload(data,window)
             if channel() == true
-                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+                functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
             elseif channel() == false
                 println("packet lost - downlink")
             end
@@ -315,7 +315,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             data = "0101"
             payload = create_payload(data,window)
             if channel() == true
-                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+                functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
             elseif channel() == false
                 println("packet lost - downlink")
             end
@@ -323,7 +323,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             data = "0110"
             payload = create_payload(data,window)
             if channel() == true
-                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+                functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
             elseif channel() == false
                 println("packet lost - downlink")
             end
@@ -331,7 +331,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             data = "0111"
             payload = create_payload(data,window)
             if channel() == true
-                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+                functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
             elseif channel() == false
                 println("packet lost - downlink")
             end
@@ -339,7 +339,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             data = "1000"
             payload = create_payload(data,window)
             if channel() == true
-                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+                functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
             elseif channel() == false
                 println("packet lost - downlink")
             end
@@ -347,7 +347,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             data = "1001"
             payload = create_payload(data,window)
             if channel() == true
-                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+                functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
             elseif channel() == false
                 println("packet lost - downlink")
             end
@@ -355,7 +355,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             data = "1010"
             payload = create_payload(data,window)
             if channel() == true
-                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+                functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
             elseif channel() == false
                 println("packet lost - downlink")
             end
@@ -363,7 +363,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
             data = "1011"
             payload = create_payload(data,window)
             if channel() == true
-                functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+                functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
             elseif channel() == false
                 println("packet lost - downlink")
             end
@@ -381,7 +381,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
         end
 
         if channel() == true
-            response = functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            response = functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
             println(response)
         elseif channel() == false
             println("packet lost - downlink")
@@ -395,7 +395,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
         payload = uplink_limit
 
         if channel() == true
-            functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
         elseif channel() == false
             println("packet lost - downlink")
         end
@@ -408,7 +408,7 @@ function cu_fu(command,id_eaxon,id_cu,id_group)
         payload = efuse_value
 
         if channel() == true
-            functional_unit_cu_wo_payload(header_IHCFP,id_eaxon,id_cu,id_group,header_GCLAP)
+            functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHCFP,header_GCLAP)
         elseif channel() == false
             println("packet lost - downlink")
         end

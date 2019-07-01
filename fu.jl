@@ -385,6 +385,7 @@ function functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHC
         end
     #set_group_conf command --> add to group
     elseif (payload == "1111") & (header_IHCFP == "1100")
+        println(payload)
         for i in 1:length(eaxons)
             if (eaxons[i].id == id_eaxon) & (eaxons[i].cu_id == id_cu)
                 eaxons[i].group = id_group
@@ -412,6 +413,7 @@ function functional_unit_cu_w_payload(id_eaxon,id_cu,id_group,payload,header_IHC
         end
     #set_stimulation_conf command (Cathode - Anode)
     elseif (payload == "11111111") & (header_IHCFP == "1010")
+        println(payload)
         for i in 1:length(eaxons)
             if (id_eaxon == eaxons[i].id) & (eaxons[i].cu_id == id_cu) & (id_group == 0)
                 eaxons[i].stimulation_conf = "11111111"
